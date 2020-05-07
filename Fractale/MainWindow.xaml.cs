@@ -1,33 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Fractale {
+
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
   public partial class MainWindow : Window, INotifyPropertyChanged {
-    private BitmapSource picture;
-    private MandelBrotArgs args;
-    private double mouseX;
-    private double mouseY;
+
+    #region Public Properties
 
     public double MouseX {
-      get { return mouseX; }
+      get {
+        return mouseX;
+      }
       set {
         if (mouseX != value) {
           mouseX = value;
@@ -35,8 +25,11 @@ namespace Fractale {
         }
       }
     }
+
     public double MouseY {
-      get { return mouseY; }
+      get {
+        return mouseY;
+      }
       set {
         if (mouseY != value) {
           mouseY = value;
@@ -44,15 +37,11 @@ namespace Fractale {
         }
       }
     }
-    public MainWindow() {
-      System.Windows.FrameworkCompatibilityPreferences.KeepTextBoxDisplaySynchronizedWithTextProperty = false;
-      InitializeComponent();
-      DataContext = this;
-      Loaded += MainWindow_Loaded;
 
-    }
     public BitmapSource Picture {
-      get { return picture; }
+      get {
+        return picture;
+      }
       set {
         if (picture != value) {
           picture = value;
@@ -60,8 +49,11 @@ namespace Fractale {
         }
       }
     }
+
     public MandelBrotArgs Args {
-      get { return args; }
+      get {
+        return args;
+      }
       set {
         if (args != value) {
           args = value;
@@ -69,10 +61,48 @@ namespace Fractale {
         }
       }
     }
+
     public int PictureCount { get; set; }
+
+    #endregion Public Properties
+
+    #region Public Constructors
+
+    public MainWindow() {
+      System.Windows.FrameworkCompatibilityPreferences.KeepTextBoxDisplaySynchronizedWithTextProperty = false;
+      InitializeComponent();
+      DataContext = this;
+      Loaded += MainWindow_Loaded;
+    }
+
+    #endregion Public Constructors
+
+    #region Public Events
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    #endregion Public Events
+
+    #region Public Methods
+
+    public void RaisePropertyChanged([CallerMemberName]string name = "") {
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
+
+    #endregion Public Methods
+
+    #region Private Fields
+
+    private BitmapSource picture;
+    private MandelBrotArgs args;
+    private double mouseX;
+    private double mouseY;
+
+    #endregion Private Fields
+
+    #region Private Methods
+
     private void MainWindow_Loaded(object sender, RoutedEventArgs e) {
-      //var m = new Mandelbrot(1920, 1080);
-      //var m = new Mandelbrot(1280, 720);
       Args = new MandelBrotArgs {
         ZoomBase = 2D,
         ZoomFactor = 7,
@@ -80,15 +110,6 @@ namespace Fractale {
         Size = new Size(512, 512)
       };
       Picture = MandelbrotService.GenerateBitmapSource(MandelbrotService.Calculate(Args), Args);
-      //MandelbrotService.SavePicture(Picture);
-      //this.Image.Source = Image. Picture;
-      //var m = new Mandelbrot(10000, 10000);
-      //m.Calculate();
-
-    }
-    public event PropertyChangedEventHandler PropertyChanged;
-    public void RaisePropertyChanged([CallerMemberName]string name = "") {
-      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 
     private void TextBox_TextChanged(object sender, TextChangedEventArgs e) {
@@ -97,14 +118,17 @@ namespace Fractale {
 
     private void Image_MouseMove(object sender, MouseEventArgs e) {
       var pos = e.GetPosition((IInputElement)sender);
+      SetMouseCoords(pos);
+    }
+
+    private void SetMouseCoords(System.Windows.Point pos) {
       MouseX = Args.Center.X + pos.X * args.RealZoom - args.Size.Width / 2 * args.RealZoom;
       MouseY = Args.Center.Y + pos.Y * args.RealZoom - args.Size.Width / 2 * args.RealZoom;
     }
 
     private void Image_MouseWheel(object sender, MouseWheelEventArgs e) {
       var pos = e.GetPosition((IInputElement)sender);
-      MouseX = Args.Center.X + pos.X * args.RealZoom - args.Size.Width / 2 * args.RealZoom;
-      MouseY = Args.Center.Y + pos.Y * args.RealZoom - args.Size.Width / 2 * args.RealZoom;
+      SetMouseCoords(pos);
       Args.Center.X = MouseX;
       Args.Center.Y = MouseY;
       if (e.Delta > 0) {
@@ -119,5 +143,7 @@ namespace Fractale {
     private void Button_Click(object sender, RoutedEventArgs e) {
       MandelbrotService.GenerateDiashow(Args, PictureCount, this);
     }
+
+    #endregion Private Methods
   }
 }
