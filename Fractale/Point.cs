@@ -1,16 +1,16 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace Fractale {
-
   public class Point : INotifyPropertyChanged {
-
-    #region Public Properties
+    private double x;
+    private double y;
 
     public double X {
-      get {
-        return x;
-      }
+      get { return x; }
       set {
         if (x != value) {
           x = value;
@@ -18,11 +18,8 @@ namespace Fractale {
         }
       }
     }
-
     public double Y {
-      get {
-        return y;
-      }
+      get { return y; }
       set {
         if (y != value) {
           y = value;
@@ -31,27 +28,10 @@ namespace Fractale {
       }
     }
 
-    #endregion Public Properties
-
-    #region Public Events
-
     public event PropertyChangedEventHandler PropertyChanged;
-
-    #endregion Public Events
-
-    #region Public Methods
-
-    public void RaisePropertyChanged([CallerMemberName]string name = "") {
-      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-    }
-
-    #endregion Public Methods
-
-    #region Private Fields
-
-    private double x;
-    private double y;
-
-    #endregion Private Fields
+        public void RaisePropertyChanged([CallerMemberName]string name = "") {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+                     
   }
 }
