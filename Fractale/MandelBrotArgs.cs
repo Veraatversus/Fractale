@@ -25,14 +25,30 @@ namespace Fractale {
         }
       }
     }
-    public double ZoomBase { get; set; }
+    public decimal ZoomBase { get; set; }
     public int Iterations { get; set; }
-    public double RealZoom => -1 / Math.Pow(ZoomBase, ZoomFactor);
+    public decimal RealZoom => 1M / Pow(ZoomBase, ZoomFactor);
 
 
     public event PropertyChangedEventHandler PropertyChanged;
     public void RaisePropertyChanged([CallerMemberName]string name = "") {
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
+
+    public static decimal Pow(decimal x, long n) {
+      decimal result = 1;
+      try {
+        while (n-- > 0) {
+          result *= x;
+        }
+
+        return result;
+      }
+      catch (Exception) {
+
+       return decimal.MaxValue;
+      }
+      
     }
   }
 }

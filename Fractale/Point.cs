@@ -6,25 +6,25 @@ using System.Text;
 
 namespace Fractale {
   public class Point : INotifyPropertyChanged {
-    private double x;
-    private double y;
+    private decimal x;
+    private decimal y;
 
-    public double X {
+    public decimal X {
       get { return x; }
       set {
-        if (x != value) {
+        //if (x != value) {
           x = value;
           RaisePropertyChanged(nameof(X));
-        }
+        //}
       }
     }
-    public double Y {
+    public decimal Y {
       get { return y; }
       set {
-        if (y != value) {
+        //if (y != value) {
           y = value;
           RaisePropertyChanged(nameof(Y));
-        }
+        //}
       }
     }
 

@@ -7,11 +7,11 @@ namespace Fractale {
     public Size() {
 
     }
-    public Size(double width, double height) {
+    public Size(decimal width, decimal height) {
       Width = width;
       Height = height;
     }
-    public double Width { get; set; }
-    public double Height { get; set; }
+    public decimal Width { get; set; }
+    public decimal Height { get; set; }
   }
 }

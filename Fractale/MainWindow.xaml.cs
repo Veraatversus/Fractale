@@ -23,10 +23,10 @@ namespace Fractale {
   public partial class MainWindow : Window, INotifyPropertyChanged {
     private BitmapSource picture;
     private MandelBrotArgs args;
-    private double mouseX;
-    private double mouseY;
+    private decimal mouseX;
+    private decimal mouseY;
 
-    public double MouseX {
+    public decimal MouseX {
       get { return mouseX; }
       set {
         if (mouseX != value) {
@@ -35,7 +35,7 @@ namespace Fractale {
         }
       }
     }
-    public double MouseY {
+    public decimal MouseY {
       get { return mouseY; }
       set {
         if (mouseY != value) {
@@ -74,12 +74,13 @@ namespace Fractale {
       //var m = new Mandelbrot(1920, 1080);
       //var m = new Mandelbrot(1280, 720);
       Args = new MandelBrotArgs {
-        ZoomBase = 2D,
+        ZoomBase = 2,
         ZoomFactor = 7,
         Iterations = 255,
         Size = new Size(512, 512)
       };
       Picture = MandelbrotService.GenerateBitmapSource(MandelbrotService.Calculate(Args), Args);
+      IsLoaded = true;
       //MandelbrotService.SavePicture(Picture);
       //this.Image.Source = Image. Picture;
       //var m = new Mandelbrot(10000, 10000);
@@ -90,30 +91,42 @@ namespace Fractale {
     public void RaisePropertyChanged([CallerMemberName]string name = "") {
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
-
+    public bool IsLoaded { get; set; }
     private void TextBox_TextChanged(object sender, TextChangedEventArgs e) {
-      Picture = MandelbrotService.GenerateBitmapSource(MandelbrotService.Calculate(Args), Args);
+      if (IsLoaded) {
+        IsLoaded = false;
+        Picture = MandelbrotService.GenerateBitmapSource(MandelbrotService.Calculate(Args), Args);
+        IsLoaded = true;
+
+      }
     }
 
     private void Image_MouseMove(object sender, MouseEventArgs e) {
       var pos = e.GetPosition((IInputElement)sender);
-      MouseX = Args.Center.X + pos.X * args.RealZoom - args.Size.Width / 2 * args.RealZoom;
-      MouseY = Args.Center.Y + pos.Y * args.RealZoom - args.Size.Width / 2 * args.RealZoom;
+      MouseX = Args.Center.X + (((decimal)pos.X - (Args.Size.Width / 2)) * Args.RealZoom);
+      MouseY = Args.Center.Y - (((decimal)pos.Y - (Args.Size.Height / 2)) * Args.RealZoom);
     }
 
     private void Image_MouseWheel(object sender, MouseWheelEventArgs e) {
       var pos = e.GetPosition((IInputElement)sender);
-      MouseX = Args.Center.X + pos.X * args.RealZoom - args.Size.Width / 2 * args.RealZoom;
-      MouseY = Args.Center.Y + pos.Y * args.RealZoom - args.Size.Width / 2 * args.RealZoom;
-      Args.Center.X = MouseX;
-      Args.Center.Y = MouseY;
-      if (e.Delta > 0) {
-        Args.ZoomFactor++;
+      MouseX = Args.Center.X + (((decimal)pos.X - (Args.Size.Width / 2)) * Args.RealZoom);
+      MouseY = Args.Center.Y - (((decimal)pos.Y - (Args.Size.Height / 2)) * Args.RealZoom);
+      //MouseX = Args.Center.X + (decimal)pos.X * args.RealZoom - (args.Size.Width / 2) * args.RealZoom;
+      //MouseY = Args.Center.Y + (decimal)pos.Y * args.RealZoom - (args.Size.Width / 2) * args.RealZoom;
+
+      if (IsLoaded) {
+        IsLoaded = false;
+        Args.Center.X = MouseX;
+        Args.Center.Y = MouseY;
+        if (e.Delta > 0) {
+          Args.ZoomFactor++;
+        }
+        else {
+          Args.ZoomFactor--;
+        }
+        Picture = MandelbrotService.GenerateBitmapSource(MandelbrotService.Calculate(Args), Args);
+        IsLoaded = true;
       }
-      else {
-        Args.ZoomFactor--;
-      }
-      Picture = MandelbrotService.GenerateBitmapSource(MandelbrotService.Calculate(Args), Args);
     }
 
     private void Button_Click(object sender, RoutedEventArgs e) {
