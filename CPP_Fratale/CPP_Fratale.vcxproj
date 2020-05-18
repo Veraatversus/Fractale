@@ -22,8 +22,9 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{1F098ACB-6395-4F1B-AE37-1447870AD948}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>CPPFratale</RootNamespace>
+    <RootNamespace>Fractal</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>CPP_Fratal</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

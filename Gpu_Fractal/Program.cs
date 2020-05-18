@@ -6,11 +6,12 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace GpuFractal {
+namespace Fractal {
 
   internal static class Program {
 
     #region Private Methods
+
     [GpuManaged]
     private static void Main() {
       while (true) {
@@ -18,11 +19,8 @@ namespace GpuFractal {
       }
     }
 
-
-
-
-
     public static Gpu gpu { get; set; } = Gpu.Default;
+
     [GpuManaged]
     private static void DoStuff() {
       const float xs = -2.1F;
@@ -76,7 +74,7 @@ namespace GpuFractal {
       });
 
       watch.Stop();
-      Console.WriteLine($"Elapsed microseconds: {(double)watch.ElapsedTicks / Stopwatch.Frequency * 1000000}");
+      Console.WriteLine($"Elapsed microseconds: {((double)watch.ElapsedTicks) / Stopwatch.Frequency * 1000000}");
 
       var bits = Gpu.CopyToHost(gpubits);
       var bitsHandle = GCHandle.Alloc(bits, GCHandleType.Pinned);

@@ -1,19 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using System.Text;
 
-namespace FractaleFast {
+namespace Fractal {
+
   public class DirectBitmap : IDisposable {
+
+    #region Public Properties
+
     public Bitmap Bitmap { get; private set; }
     public Int32[] Bits { get; private set; }
     public bool Disposed { get; private set; }
     public int Height { get; private set; }
     public int Width { get; private set; }
 
-    protected GCHandle BitsHandle { get; private set; }
+    #endregion Public Properties
+
+    #region Public Constructors
 
     public DirectBitmap(int width, int height) {
       Width = width;
@@ -23,20 +27,24 @@ namespace FractaleFast {
       Bitmap = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, BitsHandle.AddrOfPinnedObject());
     }
 
+    #endregion Public Constructors
+
+    #region Public Methods
+
     public void SetPixel(int x, int y, Color colour) {
-      int col = colour.ToArgb();
+      var col = colour.ToArgb();
       SetPixel(x, y, col);
     }
 
     public void SetPixel(int x, int y, int colour) {
-      int index = x + (y * Width);
+      var index = x + (y * Width);
       Bits[index] = colour;
     }
 
     public Color GetPixel(int x, int y) {
-      int index = x + (y * Width);
-      int col = Bits[index];
-      Color result = Color.FromArgb(col);
+      var index = x + (y * Width);
+      var col = Bits[index];
+      var result = Color.FromArgb(col);
 
       return result;
     }
@@ -48,5 +56,13 @@ namespace FractaleFast {
       Bitmap.Dispose();
       BitsHandle.Free();
     }
+
+    #endregion Public Methods
+
+    #region Protected Properties
+
+    protected GCHandle BitsHandle { get; private set; }
+
+    #endregion Protected Properties
   }
 }

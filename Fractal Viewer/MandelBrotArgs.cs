@@ -1,10 +1,9 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
+namespace Fractal {
 
-namespace Fractale {
   public class MandelBrotArgs : INotifyPropertyChanged {
     private long zoomFactor;
 
@@ -13,11 +12,15 @@ namespace Fractale {
       Z = new Point();
       Size = new Size();
     }
+
     public Point Center { get; set; }
     public Point Z { get; set; }
     public Size Size { get; set; }
+
     public long ZoomFactor {
-      get { return zoomFactor; }
+      get {
+        return zoomFactor;
+      }
       set {
         if (zoomFactor != value) {
           zoomFactor = value;
@@ -25,12 +28,13 @@ namespace Fractale {
         }
       }
     }
+
     public decimal ZoomBase { get; set; }
     public int Iterations { get; set; }
     public decimal RealZoom => 1M / Pow(ZoomBase, ZoomFactor);
 
-
     public event PropertyChangedEventHandler PropertyChanged;
+
     public void RaisePropertyChanged([CallerMemberName]string name = "") {
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
@@ -45,10 +49,8 @@ namespace Fractale {
         return result;
       }
       catch (Exception) {
-
-       return decimal.MaxValue;
+        return decimal.MaxValue;
       }
-      
     }
   }
 }

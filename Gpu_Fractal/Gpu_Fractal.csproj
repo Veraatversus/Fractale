@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A12AE37A-8414-41E8-B91B-601A369D3865}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>aleatest</RootNamespace>
+    <RootNamespace>Fractal</RootNamespace>
     <AssemblyName>aleatest</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -31,6 +31,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Fractal.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
