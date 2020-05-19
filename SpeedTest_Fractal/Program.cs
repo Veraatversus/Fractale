@@ -44,13 +44,14 @@ namespace Fractal {
           while (i < 255) {
             zrSquare = zr * zr;
             ziSquare = zi * zi;
+            if (zrSquare + ziSquare > 4) {
+              break;
+            }
+
             zi = (2 * zi * zr) + ci;
             zr = zrSquare - ziSquare + cr;
             i++;
 
-            if (zrSquare + ziSquare > 4) {
-              break;
-            }
           }
 
           if (i == 255) {
