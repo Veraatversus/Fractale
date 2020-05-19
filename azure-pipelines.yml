@@ -38,4 +38,4 @@ steps:
     title: 'v$(Build.BuildNumber)'
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
-    assets: '$(Build.ArtifactStagingDirectory)'
+    assets: '$(Build.ArtifactStagingDirectory)/*.*'
