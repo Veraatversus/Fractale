@@ -44,9 +44,12 @@ namespace Fractal {
           while (i < 255) {
             zrSquare = zr * zr;
             ziSquare = zi * zi;
-            if (zrSquare + ziSquare > 4) {
+            if (Math.Abs(zr + zi) > 4) {
               break;
             }
+            //if (zrSquare + ziSquare > 4) {
+            //  break;
+            //}
 
             zi = (2 * zi * zr) + ci;
             zr = zrSquare - ziSquare + cr;
