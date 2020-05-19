@@ -38,16 +38,4 @@ steps:
     title: 'v$(Build.BuildNumber)'
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
-
-- task: GitHubRelease@1
-  inputs:
-    gitHubConnection: 'github.com_Veraatversus'
-    repositoryName: 'Veraatversus/Fractale'
-    action: 'create'
-    target: '$(Build.SourceVersion)'
-    tagSource: 'userSpecifiedTag'
-    tag: 'v$(Build.BuildNumber)'
-    title: 'v$(Build.BuildNumber)'
-    changeLogCompareToRelease: 'lastFullRelease'
-    changeLogType: 'commitBased'
     assets: '$(Build.ArtifactStagingDirectory)'
