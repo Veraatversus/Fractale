@@ -47,6 +47,12 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '**/*.sln'
+    
 - task: GitHubRelease@1
   inputs:
     gitHubConnection: 'github.com_Veraatversus'
