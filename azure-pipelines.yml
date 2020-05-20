@@ -14,9 +14,8 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   Version.MajorMinor: 1.0
-  Version.Revision: $[counter(variables['Version.MajorMinor'], 0)]
-
-name: '$(MajorVersion).$(MinorVersion).$(PatchVersion).$(Rev:r)'
+  version.Revision: $[counter(variables['version.MajorMinor'], 0)]
+  versionNumber: '$(version.MajorMinor).$(version.Revision)'
 
 steps:
 - task: NuGetToolInstaller@1
@@ -25,10 +24,19 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+- task: PowerShell@2
+  displayName: Set the name of the build (i.e. the Build.BuildNumber)
+  inputs:
+    targetType: 'inline'
+    script: |
+      [string] $buildName = "$(versionNumber)_$(Build.SourceBranchName)"
+      Write-Host "Setting the name of the build to '$buildName'."
+      Write-Host "##vso[build.updatebuildnumber]$buildName"
+
 - task: VersionAssemblies@2
   inputs:
     Path: '$(Build.SourcesDirectory)'
-    VersionNumber: '$(Build.BuildNumber)'
+    VersionNumber: '$(versionNumber)'
     InjectVersion: true
     FilenamePattern: 'AssemblyInfo.*'
     OutputVersion: 'OutputedVersion'
