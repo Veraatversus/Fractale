@@ -51,6 +51,8 @@ steps:
     FilenamePattern: '.csproj'
     OutputVersion: 'OutputedVersion'
     AddDefault: true
+  continueOnError: true
+
 
 - task: VSBuild@1
   inputs:
