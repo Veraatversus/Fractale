@@ -32,7 +32,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      [string] $RepoName = $(Build.Repository.Name).Remove(0, $(Build.Repository.Name).IndexOf("/") + 1)
+      [string] $RepoName = $(Build.Repository.Name).Remove(5)
       write-host "##vso[task.setvariable variable=RepoName]$RepoName"
 
 
