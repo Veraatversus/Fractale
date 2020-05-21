@@ -77,7 +77,7 @@ steps:
     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.Repository.Name): $(versionNumber).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)\$(Build.Repository.Name)\: $(versionNumber).zip'
     replaceExistingArchive: true
     
 - task: GitHubRelease@1
@@ -88,8 +88,8 @@ steps:
     target: '$(Build.SourceVersion)'
     tagSource: 'userSpecifiedTag'
     tag: '$(versionNumber)'
-    title: '$(Build.Repository.Name) $(versionNumber)'
+    title: '$(Build.Repository.Name)\: $(versionNumber)'
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
-    assets: '$(Build.ArtifactStagingDirectory)\$(Build.Repository.Name): $(versionNumber).zip'
+    assets: '$(Build.ArtifactStagingDirectory)\$(Build.Repository.Name)\: $(versionNumber).zip'
     
