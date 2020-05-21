@@ -33,6 +33,8 @@ steps:
     targetType: 'inline'
     script: |
       [string] $RepoName = $(Build.Repository).Remove(0, $(Build.Repository.Name).IndexOf("/") + 1)
+      write-host "##vso[task.setvariable variable=RepoName]$RepoName"
+
 
 - task: NuGetToolInstaller@1
 
