@@ -10,7 +10,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
+  solution: '**\*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   Version.MajorMinor: 1.0
@@ -33,8 +33,8 @@ steps:
     targetType: 'inline'
     script: |
       [string] $RepoName = "$(Build.Repository.Name)".Remove(0, "$(Build.Repository.Name)".IndexOf("/") + 1)
-      write-host "##vso[task.setvariable variable=RepoName]$RepoName"
-
+      Write-Host "Setting the name of the Repository to '$RepoName'."
+      Write-Host "##vso[task.setvariable variable=RepoName]$RepoName"
 
 - task: NuGetToolInstaller@1
 
@@ -44,7 +44,7 @@ steps:
 
 - task: VersionDotNetCoreAssemblies@2
   inputs:
-    Path: '$(Build.SourcesDirectory)\SpeedTest_Fractal'
+    Path: '$(Build.SourcesDirectory)\**'
     VersionNumber: '$(versionNumber)'
     Injectversion: false
     VersionRegex: '\d+\.\d+\.\d+'
