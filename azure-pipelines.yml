@@ -33,28 +33,23 @@ steps:
       Write-Host "Setting the name of the build to '$buildName'."
       Write-Host "##vso[build.updatebuildnumber]$buildName"
 
-- task: VersionAssemblies@2
-  inputs:
-    Path: '$(Build.SourcesDirectory)'
-    VersionNumber: '$(versionNumber)'
-    InjectVersion: true
-    FilenamePattern: 'AssemblyInfo.*'
-    OutputVersion: 'OutputedVersion'
-
 - task: VersionDotNetCoreAssemblies@2
   inputs:
     Path: '$(Build.SourcesDirectory)\SpeedTest_Fractal'
     VersionNumber: '$(versionNumber)'
-    Injectversion: False
+    Injectversion: false
     VersionRegex: '\d+\.\d+\.\d+'
     FilenamePattern: '.csproj'
     OutputVersion: 'OutputedVersion'
+    AddDefault: true
+    
 
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+    
 
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
@@ -62,7 +57,7 @@ steps:
     Contents: |
       **\bin\**\!(*.pdb|*.config)
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
+    
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
@@ -70,7 +65,7 @@ steps:
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
-
+    
 - task: GitHubRelease@1
   inputs:
     gitHubConnection: 'github.com_Veraatversus'
@@ -83,4 +78,3 @@ steps:
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
     assets: '$(Build.ArtifactStagingDirectory)/*.zip'
-
