@@ -58,19 +58,13 @@ steps:
   continueOnError: true
 
 - task: CopyFiles@2
-  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-  inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: '**\bin\$(BuildConfiguration)\**'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-  condition: succeededOrFailed()
-
-- task: CopyFiles@2
   displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
   inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
     Contents: |
-      **\bin\**\!(*.pdb|*.config)
+      **\bin\$(BuildConfiguration)\**\!(*.pdb|*.config)
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  condition: succeededOrFailed()
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
