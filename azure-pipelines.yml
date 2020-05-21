@@ -78,13 +78,12 @@ steps:
     PathtoPublish: '$(build.artifactstagingdirectory)'
   condition: succeededOrFailed()
 
-
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.Repository.Name): $(Build.BuildId).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.Repository.Name): $(versionNumber).zip'
     replaceExistingArchive: true
     
 - task: GitHubRelease@1
@@ -98,5 +97,5 @@ steps:
     title: '$(Build.Repository.Name) $(versionNumber)'
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
-    assets: '$(Build.ArtifactStagingDirectory)/*.zip'
+    assets: '$(Build.ArtifactStagingDirectory)\$(Build.Repository.Name): $(versionNumber).zip'
     
