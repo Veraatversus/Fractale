@@ -46,7 +46,7 @@ steps:
     Path: '$(Build.SourcesDirectory)\SpeedTest_Fractal'
     VersionNumber: '$(versionNumber)'
     Injectversion: False
-    VersionRegex: '\d+\.\d+\.\d+\.\d+'
+    VersionRegex: '\d+\.\d+\.\d+'
     FilenamePattern: '.csproj'
     OutputVersion: 'OutputedVersion'
 
